@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Kółko i krzyżyk </title>
+    <meta name="description" content="Memefull website"/>
+    <meta name="keywords" content="gra,gry,kóło i krzyżyk, kółko, krzyżyk, tick tack toe, tick, tack, toe"/>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+
+    <script type="text/javascript">
+
+        var trybGry="";
+        function start(){
+            document.getElementById("runda").innerHTML="O";
+        }
+
+        function klik(nrPola) {
+            if (czyRemis() == false & czyZycieztwo() == false) {
+                var runda = document.getElementById("runda").textContent;
+                var idPola = "pole";
+                idPola = idPola + nrPola;
+                if (czyWolne(idPola)) { //jeżeli zajęte koniec metody klik
+                    //zmiana wartości pola
+                    document.getElementById(idPola).innerHTML = runda;
+                    if (czyZycieztwo()) zwycieztwo();
+                    if (czyRemis()) remis();
+                    if(czyRemis()==false & czyZycieztwo()==false) zmianaRundy();
+
+                    //dalej gra z robotem
+                    if (czyGraZRobotem() & czyZycieztwo()==false & czyRemis()==false) {
+                        ruchRobota();
+                        if (czyZycieztwo()) zwycieztwo();
+                        if (czyRemis()) remis();
+                        if(czyRemis()==false & czyZycieztwo()==false) zmianaRundy();
+                    }
+                }    //jeżeli zajęte koniec metody klik
+            }
+        }
+
+        function czyWolne(idPola){
+            var wartosc=document.getElementById(idPola).textContent;
+            if(wartosc!="X" && wartosc !="O") return true;
+            else if(wartosc=="X" || wartosc=="O") return false;
+            else return false;
+        }
+
+        function czyRemis(){
+            var a=document.getElementById("pole1").textContent;
+            var b=document.getElementById("pole2").textContent;
+            var c=document.getElementById("pole3").textContent;
+            var d=document.getElementById("pole4").textContent;
+            var e=document.getElementById("pole5").textContent;
+            var f=document.getElementById("pole6").textContent;
+            var g=document.getElementById("pole7").textContent;
+            var h=document.getElementById("pole8").textContent;
+            var i=document.getElementById("pole9").textContent;
+
+            if(a!="" & b!="" & c!="" & d!="" & e!="" & f!="" & g!="" & h!="" & i!="" & !czyZycieztwo())return true;
+            else return false;
+        }
+
+        function remis(){
+            document.getElementById("runda").innerHTML="";
+            document.getElementById("koniecGry").innerHTML="Remis!";
+        }
+
+        function zmianaRundy() {
+            var runda=document.getElementById("runda").textContent;
+            if(runda=="O") document.getElementById("runda").innerHTML="X";
+            else document.getElementById("runda").innerHTML="O";
+        }
+
+        function czyGraZRobotem(){
+            if(trybGry==1) return true;
+            else return false;
+        }
+
+        function ruchRobota(){
+            var done=false;
+            var rand=Math.floor(Math.random()*10)+1;
+
+            while(done==false){
+                var idPolaX="pole";
+
+                    if(rand!=10){
+                        idPolaX=idPolaX+rand;
+                        if(czyWolne(idPolaX)){
+                            //window.setTimeout(function(){document.getElementById(idPolaX).innerHTML="X"},4);
+                            document.getElementById(idPolaX).innerHTML="X";
+                            done=true;
+                        }
+                    }
+                rand=Math.floor(Math.random()*10)+1;
+            }
+        }
+
+        function czyZycieztwo(){
+            var a=document.getElementById("pole1").textContent;
+            var b=document.getElementById("pole2").textContent;
+            var c=document.getElementById("pole3").textContent;
+            var d=document.getElementById("pole4").textContent;
+            var e=document.getElementById("pole5").textContent;
+            var f=document.getElementById("pole6").textContent;
+            var g=document.getElementById("pole7").textContent;
+            var h=document.getElementById("pole8").textContent;
+            var i=document.getElementById("pole9").textContent;
+
+            if(a==b & b==c & a!="" ){
+                return true;}
+            if(d==e & e==f & d!=""){
+                return true;}
+            if(g==h & h==i & g!=""){
+                return true;}
+            if(a==d & d==g & a!=""){
+                return true;}
+            if(b==e & e==h & b!=""){
+                return true;}
+            if(c==f & f==i & c!=""){
+                return true;}
+            if(a==e & e==i & a!=""){
+                return true;}
+            if(g==e & e==c & g!=""){
+                return true;}
+            else return false;
+        }
+
+        function zwycieztwo(){
+
+            var runda=document.getElementById("runda").textContent;
+            var wynik="";
+            wynik=wynik+runda;
+
+            //wypisz wynik
+            document.getElementById("koniecGry").innerHTML="Wygrał:";
+            document.getElementById("zwyciezca").innerHTML=wynik;
+            document.getElementById("runda").innerHTML="";
+
+            //formatuje pozostałe przyciski
+            document.getElementById("dwóchGraczy").style.background="#FFA500";
+            document.getElementById("dwóchGraczy").style.border="";
+            document.getElementById("jedenGracz").style.background="#FFA500";
+            document.getElementById("jedenGracz").style.border="";
+        }
+
+        function opcja1(){
+            if(czyZycieztwo()==false & czyRemis()==false) {
+                start();
+                trybGry=1;
+                document.getElementById("jedenGracz").style.background = "#FFD700";
+                document.getElementById("jedenGracz").style.border = "3px solid #FF8000";
+
+                document.getElementById("dwóchGraczy").style.background = "#FFA500";
+                document.getElementById("dwóchGraczy").style.border = "";
+
+            } //odklikuje bliźniaczy przycisk
+        }
+
+        function opcja2() {
+            if (czyZycieztwo() == false & czyRemis() == false) {
+                start();
+                trybGry = 2;
+                document.getElementById("dwóchGraczy").style.background = "#FFD700";
+                document.getElementById("dwóchGraczy").style.border = "3px solid #FF8000";
+
+                document.getElementById("jedenGracz").style.background = "#FFA500";
+                document.getElementById("jedenGracz").style.border = "";
+                //odklikuje bliźniaczy przycisk
+            }
+        }
+    </script>
+</head>
+<body onload="start();opcja1()"; > <!-- dodać onload="start();opcja1()";-->
+<div id="strona">
+    <div id="plansza">
+        <div id="pole1" class="pole"  onclick="klik(1)"></div>
+        <div id="pole2" class="pole" onclick="klik(2)"></div>
+        <div id="pole3" class="pole" onclick="klik(3)"></div>
+        <div id="pole4" class="pole" onclick="klik(4)"></div>
+        <div id="pole5" class="pole" onclick="klik(5)"></div>
+        <div id="pole6" class="pole" onclick="klik(6)"></div>
+        <div id="pole7" class="pole" onclick="klik(7)"></div>
+        <div id="pole8" class="pole" onclick="klik(8)"></div>
+        <div id="pole9" class="pole" onclick="klik(9)"></div>
+    </div>
+
+    <div id="menu">
+
+        <div id="jedenGracz" onclick="opcja1();"> Jeden gracz</div>
+        <div id="dwóchGraczy" onclick="opcja2();"> Dwóch graczy</div>
+        <div id="terazGra">Teraz gra:</div>
+        <div id="runda"></div>
+        <div id="koniecGry" ></div>
+        <div id="nowaGra" onclick="window.location.reload()">&#x1F503</div>
+        <div id="zwyciezca"></div>
+
+    </div>
+</div>
+</body>
+</html>
